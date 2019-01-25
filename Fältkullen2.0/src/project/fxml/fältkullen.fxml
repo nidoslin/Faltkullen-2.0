@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-->
+    This file defines all graphical objects in the program such as images, tabs, containers, background colors, buttons
+    and everything else the user sees on the screen. Therefore, only project which handles user interaction with objects
+    need to be defined in java project, making project much more managable.
+
+    Written by Nils Odin 24 January 2019
+<!-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.FxmlController">
+   <children>
+      <TabPane layoutX="592.0" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: lightgray;" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="200.0" tabMinHeight="40.0" tabMinWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab closable="false" text="Simulate">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <StackPane fx:id="mapPane" layoutX="14.0" layoutY="14.0" prefHeight="913.0" prefWidth="1441.0" style="-fx-background-color: black; -fx-padding: 10;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="419.0" AnchorPane.topAnchor="60.0">
+                           <children>
+                              <Rectangle fx:id="clip" arcHeight="5.0" arcWidth="5.0" height="888.0" stroke="BLACK" strokeType="INSIDE" width="1407.0" />
+                              <ImageView id="mainMap" fx:id="mainMap" fitHeight="883.0" fitWidth="1400.0" pickOnBounds="true">
+                                 <image>
+                                    <Image url="https://media.istockphoto.com/vectors/vector-map-of-denmark-vector-id643417482" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <VBox id="Meny" alignment="TOP_CENTER" layoutX="1571.0" layoutY="14.0" prefHeight="934.0" prefWidth="335.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="1550.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <Label prefHeight="73.0" prefWidth="322.0" text="FÄLTKULLEN">
+                                 <font>
+                                    <Font name="Corbel" size="55.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="49.0" prefWidth="335.0" spacing="10.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="0.0" prefWidth="124.0">
+                                       <children>
+                                          <Button fx:id="blueBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pressBlueBtn" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: cornflowerblue;" text="SVERIGE" textFill="#e1ff00">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="56.0" prefWidth="124.0">
+                                       <children>
+                                          <Button fx:id="redBtn" mnemonicParsing="false" onAction="#pressRedBtn" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: red;" text="DANMARK" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                             <effect>
+                                                <Bloom threshold="0.54">
+                                                   <input>
+                                                      <Glow level="1.0" />
+                                                   </input>
+                                                </Bloom>
+                                             </effect>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <Button fx:id="loadOtherMapBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#openFileAsNewMap" text="LOAD ANOTHER MAP" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="700.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Unit Settings">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox id="Meny" alignment="TOP_CENTER" layoutX="1571.0" layoutY="14.0" prefHeight="934.0" prefWidth="335.0">
+                           <children>
+                              <Label prefHeight="73.0" prefWidth="322.0" text="FÄLTKULLEN">
+                                 <font>
+                                    <Font name="Corbel" size="55.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="56.0" prefWidth="335.0" spacing="10.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="67.0" prefWidth="140.0">
+                                       <children>
+                                          <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: cornflowerblue;" text="SVERIGE" textFill="#e1ff00">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="71.0" prefWidth="140.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: red;" text="DANMARK" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Label layoutX="14.0" layoutY="14.0" text="UNIT SETTINGS" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <font>
+                              <Font size="60.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="15.0" layoutY="103.0" text="Currently, these settings have no functionality!" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="103.0" />
+                        <GridPane alignment="CENTER" layoutX="14.0" layoutY="172.0" prefHeight="323.0" prefWidth="1353.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="172.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="207.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="412.0" minWidth="10.0" prefWidth="230.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="412.0" minWidth="10.0" prefWidth="226.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="439.0" minWidth="10.0" prefWidth="264.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="505.0" minWidth="10.0" prefWidth="260.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Weapon Accuracy" GridPane.rowIndex="3">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Weapon Damage" GridPane.rowIndex="2">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Weapon Range" GridPane.rowIndex="4">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Protection" GridPane.rowIndex="5">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Sensor Range" GridPane.rowIndex="6">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Sensor Interval" GridPane.rowIndex="7">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Soldier Accuracy" GridPane.rowIndex="8">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Soldier Morale" GridPane.rowIndex="9">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <CheckBox alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="160.0" text="Soldier Movespeed" GridPane.rowIndex="10">
+                                 <opaqueInsets>
+                                    <Insets left="30.0" />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <Label text="Base Value" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Label contentDisplay="CENTER" text="Minimum Value" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Label text="Maximum Value" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Label text="Evolutionary cost" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <TextField alignment="CENTER" promptText="1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField alignment="CENTER" layoutX="172.0" layoutY="47.0" promptText="90" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField alignment="CENTER" promptText="10" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField alignment="CENTER" promptText="5" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField alignment="CENTER" promptText="5" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <TextField alignment="CENTER" promptText="1" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <TextField alignment="CENTER" promptText="1" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <TextField alignment="CENTER" promptText="70" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <TextField alignment="CENTER" promptText="1" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <TextField alignment="CENTER" promptText="75" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <TextField alignment="CENTER" promptText="95" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                              <TextField alignment="CENTER" promptText="60" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                              <TextField alignment="CENTER" promptText="10" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                              <TextField alignment="CENTER" promptText="1" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                              <TextField alignment="CENTER" promptText="2" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                              <TextField alignment="CENTER" promptText="5" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                              <TextField alignment="CENTER" promptText="115" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                              <TextField alignment="CENTER" promptText="15" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                              <TextField alignment="CENTER" promptText="300" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                              <TextField alignment="CENTER" promptText="20" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                              <TextField alignment="CENTER" promptText="10" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                              <TextField alignment="CENTER" promptText="80" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                              <TextField alignment="CENTER" promptText="100" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                              <TextField alignment="CENTER" promptText="225" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                              <TextField alignment="CENTER" promptText="-75" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                              <TextField alignment="CENTER" promptText="125" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                              <TextField alignment="CENTER" promptText="25" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+                              <TextField alignment="CENTER" promptText="75" GridPane.columnIndex="4" GridPane.rowIndex="10" />
+                           </children>
+                        </GridPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Design of Units">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox id="Meny" alignment="TOP_CENTER" layoutX="1571.0" layoutY="14.0" prefHeight="934.0" prefWidth="335.0">
+                           <children>
+                              <Label prefHeight="73.0" prefWidth="322.0" text="FÄLTKULLEN">
+                                 <font>
+                                    <Font name="Corbel" size="55.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="56.0" prefWidth="335.0" spacing="10.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="67.0" prefWidth="140.0">
+                                       <children>
+                                          <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: cornflowerblue;" text="SVERIGE" textFill="#e1ff00">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="71.0" prefWidth="140.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: red;" text="DANMARK" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Organogram">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="946.0" layoutY="508.0" text="NOT IMPLEMENTED" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="400.0">
+                           <font>
+                              <Font size="96.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Unit Deployment">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="446.0" text="NOT IMPLEMENTED">
+                           <font>
+                              <Font size="96.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="580.0" layoutY="587.0" text="SHOULD POSSEBLY BE PUT UNDER &quot;SIMULATE&quot;">
+                           <font>
+                              <Font size="36.0" />
+                           </font></Label>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Strategy">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="446.0" text="NOT IMPLEMENTED">
+                           <font>
+                              <Font size="96.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Save / Load">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="446.0" text="NOT IMPLEMENTED">
+                           <font>
+                              <Font size="96.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Help">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="40.0" text="NOT IMPLEMENTED">
+                           <font>
+                              <Font size="96.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="487.0" layoutY="181.0" prefHeight="202.0" prefWidth="946.0" text="This version is a very early draft for how the general design might look. As of right now, no army related stuff is implemented. Most implementations have been in the Simulate tab, where the map is choosable by the user (any .jpg or .png image is allowed) and can be dragged around as well as zoomed in and out using a mouse wheel. The Unit settings have also been crudely remade as they were in the previous iteration, but lack any meaningful functionality. " textAlignment="CENTER" wrapText="true" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="946.0" layoutY="375.0" nodeOrientation="LEFT_TO_RIGHT" text="Next thing to do is to make the design look a bit less crappy as well as start thinking about what functionality we want for the army and how to implement the logic for those. " wrapText="true" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="260.0" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
