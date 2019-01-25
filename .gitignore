@@ -2,7 +2,7 @@
 *.class
 
 # Output files
-**/out
+out
 
 # Log file
 *.log
