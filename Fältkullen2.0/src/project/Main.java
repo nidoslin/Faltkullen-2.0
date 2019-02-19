@@ -36,7 +36,7 @@ public class Main extends Application {
 
         stage.setTitle("Fältkullen 2.0");
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.centerOnScreen();
         stage.getIcons().add(new Image(getClass().getResource("res/military.png").toExternalForm()));
         scene.setCursor(Cursor.CROSSHAIR);
