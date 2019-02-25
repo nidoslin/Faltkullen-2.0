@@ -7,14 +7,14 @@ package project;
 
 
 import javafx.animation.AnimationTimer;
-        import javafx.application.Application;
-        import javafx.event.EventHandler;
+import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.*;
-        import javafx.scene.image.*;
-        import javafx.scene.input.KeyEvent;
-        import javafx.scene.paint.Color;
-        import javafx.stage.Stage;
+import javafx.scene.image.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  * Hold down an arrow key to have your hero move around the screen.
@@ -22,9 +22,10 @@ import javafx.scene.*;
  */
 public class Test2 extends Application {
 
-    private static final double W = 1400, H = 800;
+    private static double W, H;
 
     private static final String HERO_IMAGE_LOC = "http://icons.iconarchive.com/icons/raindropmemory/legendora/64/Hero-icon.png";
+    private String lastColor = "";
 
 
 
@@ -33,16 +34,17 @@ public class Test2 extends Application {
 
     PixelReader pixelReader;
 
-
-
     boolean running, goNorth, goSouth, goEast, goWest;
 
     @Override
     public void start(Stage stage) throws Exception {
         heroImage = new Image(HERO_IMAGE_LOC);
         hero = new ImageView(heroImage);
-        Image background = new Image("https://i.imgur.com/ptr3zBi.png");
+        Image background = new Image("https://i.imgur.com/H6iCEoD.jpg", 1920, 1800, true, false);
         ImageView bgView = new ImageView(background);
+
+        W = background.getWidth();
+        H = background.getHeight();
 
         pixelReader = background.getPixelReader();
 
@@ -107,8 +109,14 @@ public class Test2 extends Application {
         final double cx = hero.getBoundsInLocal().getWidth()  / 2;
         final double cy = hero.getBoundsInLocal().getHeight() / 2;
 
+
         double x = cx + hero.getLayoutX() + dx;
         double y = cy + hero.getLayoutY() + dy;
+
+        if(isInWater(x, y)) {
+            x = cx + hero.getLayoutX() + (dx/5.0);
+            y = cy + hero.getLayoutY() + (dy/5.0);
+        }
 
         moveHeroTo(x, y);
     }
@@ -122,24 +130,29 @@ public class Test2 extends Application {
                 y - cy >= 0 &&
                 y + cy <= H) {
             hero.relocate(x - cx, y - cy);
+
         }
-        readPixel(x, y);
+        //readPixel(x, y);
     }
 
     public static void main(String[] args) { launch(args); }
 
+    // for testing purposes
     public void readPixel(double x, double y){
         Color color = pixelReader.getColor((int)x, (int)y);
+        if(!color.toString().equals(lastColor)) {
+            System.out.println(color.getBlue());
+            lastColor = color.toString();
+            if(color.getBlue()>0.93){
+                System.out.println("BLÅTT!");
+            }
 
-        //System.out.println(color.toString());
-        if(color.toString().equals("0x22b14cff")){
-            System.out.println("grön");
         }
-        if(color.toString().equals("0xed1c24ff")){
-            System.out.println("röd");
-        }
-        if(color.toString().equals("0x00a2e8ff")){
-            System.out.println("blå");
-        }
+    }
+
+    // returns true if the coordinates correspond to a blue part of the map
+    private boolean isInWater(double x, double y){
+        Color color = pixelReader.getColor((int)x, (int)y);
+        return color.getBlue() > 0.92;
     }
 }
