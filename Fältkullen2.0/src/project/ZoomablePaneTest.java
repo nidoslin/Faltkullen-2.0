@@ -6,6 +6,10 @@
 
 package project;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -19,12 +23,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -35,8 +41,12 @@ public class ZoomablePaneTest extends Application{
     // These values can be modified to change how much can be zoomed.
     Slider slider = new Slider(0.5,3,0);
     Pane content;
-    ArrayList<Unit> units;
+    public static ArrayList<Unit> units;
     ZoomingPane zoomingPane;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public void start(Stage primaryStage){
         // content is a pane which will be zoomable and movable, so anything shown on screen is put in this pane
@@ -52,14 +62,24 @@ public class ZoomablePaneTest extends Application{
 
         Button addUnitBtn = new Button("Add unit!");
         addUnitBtn.setOnAction(event -> {changeOnClickToAddUnit();});
-        Text instructions = new Text("Click a unit to select it. Selected units can be moved with WASD. \n New units can be added using button, however, the program currently doesnt handle it well if they are placed outside of the map! \n Zooming can be done using slider on bottom or with mousewheel!");
-        primaryStage.setScene(new Scene(new BorderPane(zoomingPane, instructions, addUnitBtn, slider, null)));
 
-        // this method adds new units to the given position
+        Button moveUnitBtn = new Button("Order move!");
+        moveUnitBtn.setOnAction(event -> {orderMove();});
+
+        Text instructions = new Text("Click a unit to select it. Selected units can be moved with WASD. \n " +
+                "New units can be added using button, however, the program currently doesnt handle it well if they are placed outside of the map! \n " +
+                "Zooming can be done using slider on bottom or with mousewheel!");
+
+        primaryStage.setScene(new Scene(new BorderPane(zoomingPane, instructions, addUnitBtn, slider, moveUnitBtn)));
+
+        // adds a few friendly units to the given positions
         units = new ArrayList<>();
-        addUnit( 80, 80);
-        addUnit(400, 200);
-        addUnit(700, 150);
+        addUnit( 500, 80, Unit.typeOfUnit.friend);
+        addUnit(480, 200, Unit.typeOfUnit.friend);
+        addUnit(530, 150, Unit.typeOfUnit.friend);
+
+        // adds an enemy too
+        addUnit(1500, 600, Unit.typeOfUnit.enemy);
 
         primaryStage.setWidth(1300);
         primaryStage.setHeight(800);
@@ -69,11 +89,14 @@ public class ZoomablePaneTest extends Application{
     private class ZoomingPane extends Region {
         Pane content;
         private DoubleProperty zoomFactor = new SimpleDoubleProperty(0);
+        double offSetX, offSetY;
 
         double oldMouseX, oldMouseY;
 
         private ZoomingPane(Pane map) {
             content = map;
+            offSetX = content.getBackground().getImages().get(0).getImage().getWidth()/2;
+            offSetY = content.getBackground().getImages().get(0).getImage().getHeight()/2;
 
             getChildren().add(content);
             Scale scale = new Scale(1, 1);
@@ -91,6 +114,10 @@ public class ZoomablePaneTest extends Application{
 
             zoomFactor.addListener(new ChangeListener<Number>() {
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                    // TODO fix offsets so the map zoom is centered rather then zooming into top left corner
+                    //double newOffsetX = offSetX*newValue.doubleValue() + content.getTranslateX();
+                    //double newOffsetY = offSetY*newValue.doubleValue();
+
                     scale.setX(newValue.doubleValue());
                     scale.setY(newValue.doubleValue());
                     requestLayout();
@@ -185,13 +212,17 @@ public class ZoomablePaneTest extends Application{
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
-    private void addUnit(int X, int Y){
+
+
+    /**
+     * Adds a unit of the given enum type (friend or enemy) at the given x and y coordinates (usually where the mouse
+     * clicked)
+     * @param type a string determining what kind of unit this is. The type can be used to determine stats, image etc
+     */
+    private void addUnit(int X, int Y, Unit.typeOfUnit type){
         //create new unit at given position
-        Unit unit = new Unit(content, X, Y);
+        Unit unit = new Unit(content, X, Y, type);
         units.add(unit);
         // make sure all other units are deselected
         updateUnitsOnClick();
@@ -206,9 +237,25 @@ public class ZoomablePaneTest extends Application{
     private void changeOnClickToAddUnit(){
         content.setCursor(Cursor.CROSSHAIR);
         content.setOnMousePressed(event -> {
+            addUnit((int) (event.getX()), (int) event.getY(), Unit.typeOfUnit.friend);
 
-            addUnit((int) (event.getX()), (int) event.getY());
+            content.setOnMousePressed(event1 -> {});
+            content.setCursor(Cursor.DEFAULT);
+        });
+    }
 
+    /**
+     * This is the method ran when pressing the "order move" button
+     */
+    private void orderMove(){
+        content.setCursor(Cursor.CROSSHAIR);
+
+        content.setOnMousePressed(event -> {
+            for(Unit unit:units){
+                if(unit.getIsSelectedUnit()){
+                    unit.orderMoveToLocation(event.getX(), event.getY());
+                }
+            }
             content.setOnMousePressed(event1 -> {});
             content.setCursor(Cursor.DEFAULT);
         });
