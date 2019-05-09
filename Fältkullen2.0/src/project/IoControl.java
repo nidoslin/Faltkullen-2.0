@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 
 public class IoControl {
 
-    public boolean changeMapImage(ImageView map){
+    public Image changeMapImage(){
 
         // Create file chooser
         FileChooser fc = new FileChooser();
@@ -25,12 +25,11 @@ public class IoControl {
         // Attempt to change image to new one
         try {
             String newImagePath = fc.showOpenDialog(Main.stage).getAbsolutePath();
-            Image source = new Image(new FileInputStream(newImagePath));
-            map.setImage(source);
-            return true;
+            Image source = new Image(new FileInputStream(newImagePath), 1920, 1080,true, false);
+            return source;
         } catch (Exception e) {
             e.getMessage();
-            return false;
+            return null;
         }
     }
 }

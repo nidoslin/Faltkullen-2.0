@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import static java.lang.Float.floatToIntBits;
 import static java.lang.Float.intBitsToFloat;
@@ -33,6 +34,7 @@ public class Unit {
     private boolean goNorth, goSouth, goWest, goEast, running;
     private AnimationTimer timer;
     private boolean isSelectedUnit = false;
+    private boolean hasOrder = false;
     public enum typeOfUnit{
         friend,
         enemy
@@ -102,6 +104,10 @@ public class Unit {
         timer.start();
     }
 
+    public void removeUnit(){
+        map.getChildren().remove(unitView);
+    }
+
     /**
      * This method is ran a bunch of times per second and sligthly adjusts unit position with the distance given as
      * arguments.
@@ -148,7 +154,7 @@ public class Unit {
      * Checks whether a position is in the map
      * @return true if position is no outside of map
      */
-    private boolean isInMap(double nextX, double centerX, double nextY, double centerY){
+    public boolean isInMap(double nextX, double centerX, double nextY, double centerY){
         return (
                 nextX - centerX >= LEFT_EDGE &&
                 nextX + centerX <= RIGHT_EDGE &&
@@ -195,7 +201,8 @@ public class Unit {
 
     public void updateWASDControls(){
         // set up temporary unit movement
-        map.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+        map.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
@@ -208,7 +215,7 @@ public class Unit {
             }
         });
 
-        map.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
+        map.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
@@ -228,6 +235,14 @@ public class Unit {
      * enemy. This method also checks and handles moving slower through water correctly.
      */
     public void orderMoveToLocation(double x, double y){
+        // make sure the requested order is inside the map
+        if(!isInMap(x, unitImage.getWidth()/2, y, unitImage.getHeight()/2)){
+            return;
+        }
+
+        if(hasOrder) return;
+        hasOrder = true;
+
         // get the positions to move between
         Point2D from = new Point2D(unitView.getLayoutX(), unitView.getLayoutY());
         Point2D to = new Point2D(x-unitImage.getWidth()/2, y-unitImage.getHeight()/2);
@@ -310,6 +325,7 @@ public class Unit {
                 // positions
                 if(movedDistance.doubleValue() > distance){
                     travelLine.setOpacity(0);
+                    hasOrder = false;
                     this.stop();
                 }
                 if(checkIfUnitCollidedWithEnemy()){

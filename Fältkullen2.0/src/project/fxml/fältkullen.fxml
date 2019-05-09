@@ -9,21 +9,22 @@
 <!-->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -32,19 +33,7 @@
    <children>
   <AnchorPane fx:id="pane1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <StackPane fx:id="mapPane" layoutX="14.0" layoutY="34.0" prefHeight="913.0" prefWidth="1441.0" style="-fx-background-color: black; -fx-padding: 10;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="419.0" AnchorPane.topAnchor="60.0">
-               <children>
-                  <Rectangle fx:id="clip" arcHeight="5.0" arcWidth="5.0" height="888.0" stroke="BLACK" strokeType="INSIDE" width="1407.0" StackPane.alignment="CENTER" />
-                  <ImageView id="mainMap" fx:id="mainMap" fitHeight="883.0" fitWidth="1400.0" pickOnBounds="true" StackPane.alignment="CENTER">
-                     <image>
-                        <Image url="https://media.istockphoto.com/vectors/vector-map-of-denmark-vector-id643417482" />
-                     </image>
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                  </ImageView>
-               </children>
-            </StackPane>
+
             <VBox id="Meny" alignment="TOP_CENTER" layoutX="1571.0" layoutY="34.0" prefWidth="335.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="70.0">
                <children>
                   <Label prefHeight="73.0" prefWidth="322.0" text="FÄLTKULLEN">
@@ -56,7 +45,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="0.0" prefWidth="124.0">
                            <children>
-                              <Button fx:id="blueBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pressBlueBtn" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: cornflowerblue;" text="SVERIGE" textFill="#e1ff00">
+                              <Button fx:id="blueBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pressBlueBtn" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: cornflowerblue;" text="FRIENDLY" textFill="#e1ff00">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -65,7 +54,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="56.0" prefWidth="124.0">
                            <children>
-                              <Button fx:id="redBtn" mnemonicParsing="false" onAction="#pressRedBtn" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: red;" text="DANMARK" textFill="WHITE">
+                              <Button fx:id="redBtn" mnemonicParsing="false" onAction="#pressRedBtn" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: red;" text="ENEMY" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -84,6 +73,8 @@
                         <Insets />
                      </opaqueInsets>
                   </HBox>
+                  <Button fx:id="addUnitBtn" mnemonicParsing="false" text="add unit" />
+                  <Button fx:id="moveUnitBtn" mnemonicParsing="false" text="move unit" />
                   <Button fx:id="loadOtherMapBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#openFileAsNewMap" text="LOAD ANOTHER MAP" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets top="700.0" />
@@ -94,6 +85,13 @@
                   </Button>
                </children>
             </VBox>
+            <BorderPane fx:id="testPane" layoutX="73.0" layoutY="155.0" prefHeight="826.0" prefWidth="1353.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="200.0">
+               <center>
+                  <Pane fx:id="centerMapPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+               <bottom>
+                  <Slider fx:id="zoomSlider" BorderPane.alignment="CENTER" />
+               </bottom></BorderPane>
          </children>
       </AnchorPane>
   <AnchorPane fx:id="pane2" disable="true" minHeight="0.0" minWidth="0.0" opacity="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -331,7 +329,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="pane8" disable="true" minHeight="0.0" minWidth="0.0" opacity="0.0" prefHeight="180.0" prefWidth="200.0">
+      <AnchorPane fx:id="pane8" disable="true" minHeight="0.0" minWidth="0.0" opacity="0.03" prefHeight="180.0" prefWidth="200.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="40.0" text="NOT IMPLEMENTED">
                <font>

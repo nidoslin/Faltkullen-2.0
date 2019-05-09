@@ -1,10 +1,10 @@
 /* This is a custom design that is applied to the top "tab bar", ie the Hbox in the fxml */
 .customTabBar{
     -fx-background-color: #707070;
-    -fx-background-radius: 20;
+
     -fx-pref-height: 160;
     -fx-translate-y: -5;
-
+    -fx-background-radius: 20;
     -fx-padding: 30;
     -fx-spacing: 90;
 }

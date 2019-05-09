@@ -39,7 +39,6 @@ public class Main extends Application {
         stage.setResizable(true);
         stage.centerOnScreen();
         stage.getIcons().add(new Image(getClass().getResource("res/military.png").toExternalForm()));
-        scene.setCursor(Cursor.CROSSHAIR);
 
         stage.show();
     }

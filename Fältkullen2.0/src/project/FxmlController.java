@@ -17,22 +17,25 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class FxmlController {
 
     // Objects from the project file
-    @FXML StackPane mapPane;
-    @FXML ImageView mainMap;
+    @FXML BorderPane testPane;
+    @FXML Slider zoomSlider;
     @FXML Button blueBtn;
     @FXML Button redBtn;
-    @FXML Tab simulateTab;
+    @FXML Button addUnitBtn;
+    @FXML Button moveUnitBtn;
 
     // Objects related to the tabmenu
     @FXML AnchorPane tabmenu;
@@ -40,15 +43,15 @@ public class FxmlController {
     private AnchorPane[] tabs;
     private int selectedTab = 0;
     private TranslateTransition moveDown, moveUp;
+    public static boolean isFriendlySelected = true;
 
     // Panes, ie the screens shown
     @FXML AnchorPane pane1, pane2, pane3, pane4, pane5, pane6, pane7, pane8;
     AnchorPane[] panes;
 
-    // Values related to the zooming and moving of the map
-    private double height, width;
-    private static double initX, initY;
-    private static double offSetX,offSetY, zoomLevel;
+    // zoomable pane related stuff
+    ZoomablePaneTest zpt;
+    ZoomablePaneTest.ZoomingPane zoomingPane;
 
     /**
      * initialize() is called right after the constructor, but unlike the constructor, has access to all FXML
@@ -56,13 +59,19 @@ public class FxmlController {
      */
     @FXML
     public void initialize(){
-        setUpMapControls();
 
         panes = new AnchorPane[] {pane1, pane2, pane3, pane4, pane5, pane6, pane7, pane8};
         tabs = new AnchorPane[] {tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8};
         setUpCustomTabDrawer();
         setUpCustomTabTransitions();
         setUpCustomTabsClicked();
+        addZoomablePane();
+    }
+
+    public void addZoomablePane(){
+        zpt = new ZoomablePaneTest(new Pane(),zoomSlider, addUnitBtn, moveUnitBtn);
+        zoomingPane = zpt.getZoomingPane();
+        testPane.setCenter(zoomingPane);
     }
 
     /**
@@ -70,74 +79,17 @@ public class FxmlController {
      * Only .jpg and .png images are accepted.
      */
     public void openFileAsNewMap(){
-        boolean changeSucceded = new IoControl().changeMapImage(mainMap);
-
-        if(changeSucceded) {
-            // restore map values
-            height = mainMap.getImage().getHeight();
-            width = mainMap.getImage().getWidth();
-            offSetX = width / 2;
-            offSetY = height / 2;
-            zoomLevel = 1;
-
-            // restore image zoom and location
-            mainMap.setViewport(new Rectangle2D(0, 0, width, height));
-        }
-    }
-
-    /**
-     * Sets up the initial values of the map as well as zoom and drag functionality
-     */
-    private void setUpMapControls(){
-        height = mainMap.getImage().getHeight();
-        width = mainMap.getImage().getWidth();
-        offSetX = width/2;
-        offSetY = height/2;
-        zoomLevel = 1;
-
-        makeMapDraggable();
-        makeMapZoomable();
-    }
-
-    private void zoomMap(double zoom){
-        zoomLevel += zoom;
-        if(zoomLevel < 0.3) zoomLevel -= zoom;
-        mainMap.setViewport(new Rectangle2D(offSetX-((width/zoomLevel)/2), offSetY-((height/zoomLevel)/2), width/zoomLevel, height/zoomLevel));
-    }
-
-    private void makeMapDraggable(){
-        mainMap.setOnMousePressed(event -> {
-            initX = event.getSceneX();
-            initY = event.getSceneY();
-        });
-        mainMap.setOnMouseDragged(event -> {
-            mainMap.setViewport(new Rectangle2D(offSetX-((width/zoomLevel)/2), offSetY-((height/zoomLevel)/2), width/zoomLevel, height/zoomLevel));
-            offSetX += (initX-event.getSceneX());
-            offSetY += (initY-event.getSceneY());
-            if (offSetX > width || offSetX < 0) offSetX -= (initX-event.getSceneX());     //makes sure you cant drag the map out of the scene
-            if (offSetY > height || offSetY < 0) offSetY -= (initY-event.getSceneY());    //makes sure you cant drag the map out of the scene
-            initX = event.getSceneX();
-            initY = event.getSceneY();
-        });
-    }
-
-    private void makeMapZoomable(){
-        mapPane.setOnScroll(event -> {
-            double zoomFactor = 0.1;
-            if(event.getDeltaY() < 0){
-                zoomFactor=-0.1;
-            }
-            zoomMap(zoomFactor);
-        });
+        zpt.changeMap();
     }
 
     public void pressBlueBtn(){
+        isFriendlySelected = true;
         blueBtn.setEffect(new Glow(0.6));
         redBtn.setEffect(new Glow(0));
-
     }
 
     public void pressRedBtn(){
+        isFriendlySelected = false;
         redBtn.setEffect(new Glow(1));
         redBtn.setEffect(new Bloom(0.3));
         blueBtn.setEffect(new Glow(0));

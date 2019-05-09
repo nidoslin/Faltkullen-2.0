@@ -6,11 +6,6 @@
 
 package project;
 
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
-import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -18,75 +13,88 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class ZoomablePaneTest extends Application{
-    // TODO Clean up class, make it an object rather then a runnable, add javadocs etc
+public class ZoomablePaneTest {
 
     // This is the bottom screen slider that controls the zoom level.
     // These values can be modified to change how much can be zoomed.
-    Slider slider = new Slider(0.5,3,0);
+    Slider slider;
     Pane content;
     public static ArrayList<Unit> units;
     ZoomingPane zoomingPane;
+    Image background;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public void start(Stage primaryStage){
+    public ZoomablePaneTest(Pane content, Slider zoomslider, Button addUnitBtn, Button moveUnitBtn) {
         // content is a pane which will be zoomable and movable, so anything shown on screen is put in this pane
-        content = new Pane();
+        this.content = content;
 
         // set the image to be used as map
-        Image background = new Image("https://i.imgur.com/H6iCEoD.jpg", 1920, 1800, true, false);
+        background = new Image("https://i.imgur.com/H6iCEoD.jpg", 1980, 1020, true, false);
         content.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, null, null)));
+
+        slider = zoomslider;
+        slider.setMin(0.5);
+        slider.setMax(3);
+        slider.setValue(0);
 
         // zoomingPane is the "black" square in the program and it gives functionality to zoom its content
         zoomingPane = new ZoomingPane(content);
+        zoomingPane.setPrefHeight(10000);
+        zoomingPane.setPrefWidth(10000);
         zoomingPane.zoomFactorProperty().bind(slider.valueProperty());
 
-        Button addUnitBtn = new Button("Add unit!");
-        addUnitBtn.setOnAction(event -> {changeOnClickToAddUnit();});
 
-        Button moveUnitBtn = new Button("Order move!");
-        moveUnitBtn.setOnAction(event -> {orderMove();});
+        //Button addUnitBtn = new Button("Add unit!");
+        addUnitBtn.setOnAction(event -> {
+            changeOnClickToAddUnit();
+        });
 
-        Text instructions = new Text("Click a unit to select it. Selected units can be moved with WASD. \n " +
-                "New units can be added using button, however, the program currently doesnt handle it well if they are placed outside of the map! \n " +
-                "Zooming can be done using slider on bottom or with mousewheel!");
-
-        primaryStage.setScene(new Scene(new BorderPane(zoomingPane, instructions, addUnitBtn, slider, moveUnitBtn)));
+        //Button moveUnitBtn = new Button("Order move!");
+        moveUnitBtn.setOnAction(event -> {
+            orderMove();
+        });
 
         // adds a few friendly units to the given positions
         units = new ArrayList<>();
-        addUnit( 500, 80, Unit.typeOfUnit.friend);
+        addUnit(150, 30, Unit.typeOfUnit.friend);
         addUnit(480, 200, Unit.typeOfUnit.friend);
         addUnit(530, 150, Unit.typeOfUnit.friend);
 
         // adds an enemy too
-        addUnit(1500, 600, Unit.typeOfUnit.enemy);
-
-        primaryStage.setWidth(1300);
-        primaryStage.setHeight(800);
-        primaryStage.show();
+        addUnit(1200, 600, Unit.typeOfUnit.enemy);
     }
 
-    private class ZoomingPane extends Region {
+    public ZoomingPane getZoomingPane(){
+        return zoomingPane;
+    }
+
+    public void changeMap(){
+        Image newMap = new IoControl().changeMapImage();
+
+        if(newMap!=null) {
+            removeAllUnits();
+            content.setBackground(new Background(new BackgroundImage(newMap, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, null, null)));
+        }
+    }
+
+    public void removeAllUnits(){
+        for (Unit unit:units){
+            unit.removeUnit();
+        }
+        units.clear();
+    }
+
+
+    public class ZoomingPane extends Region {
         Pane content;
         private DoubleProperty zoomFactor = new SimpleDoubleProperty(0);
         double offSetX, offSetY;
@@ -95,6 +103,7 @@ public class ZoomablePaneTest extends Application{
 
         private ZoomingPane(Pane map) {
             content = map;
+
             offSetX = content.getBackground().getImages().get(0).getImage().getWidth()/2;
             offSetY = content.getBackground().getImages().get(0).getImage().getHeight()/2;
 
@@ -212,9 +221,6 @@ public class ZoomablePaneTest extends Application{
         }
     }
 
-
-
-
     /**
      * Adds a unit of the given enum type (friend or enemy) at the given x and y coordinates (usually where the mouse
      * clicked)
@@ -223,7 +229,16 @@ public class ZoomablePaneTest extends Application{
     private void addUnit(int X, int Y, Unit.typeOfUnit type){
         //create new unit at given position
         Unit unit = new Unit(content, X, Y, type);
+
         units.add(unit);
+
+        // handles if unit was placed outside of map
+        if(!unit.isInMap(X, unit.getImageview().getImage().getWidth()/2, Y, unit.getImageview().getImage().getHeight()/2))
+        {
+            unit.removeUnit();
+            units.remove(unit);
+            return;
+        }
         // make sure all other units are deselected
         updateUnitsOnClick();
 
@@ -237,7 +252,8 @@ public class ZoomablePaneTest extends Application{
     private void changeOnClickToAddUnit(){
         content.setCursor(Cursor.CROSSHAIR);
         content.setOnMousePressed(event -> {
-            addUnit((int) (event.getX()), (int) event.getY(), Unit.typeOfUnit.friend);
+            if(FxmlController.isFriendlySelected) addUnit((int) (event.getX()), (int) event.getY(), Unit.typeOfUnit.friend);
+            else addUnit((int) (event.getX()), (int) event.getY(), Unit.typeOfUnit.enemy);
 
             content.setOnMousePressed(event1 -> {});
             content.setCursor(Cursor.DEFAULT);
